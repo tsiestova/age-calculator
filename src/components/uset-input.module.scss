@@ -1,0 +1,57 @@
+@use "../styles/abstracts/colors" as colors;
+@use "../styles/abstracts/functions" as media;
+
+.input__wrap {
+
+}
+
+.label {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: colors.$color6;
+  display: block;
+}
+
+.user__input{
+  display: block;
+  width: 100%;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0.01em;
+  color: #151515;
+  outline: none;
+  padding: 12px 16px;
+  border: 1px solid #DCDCDC;
+  height: 54px;
+  border-radius: 8px;
+
+  &:focus {
+    border: 1px solid #854DFF;
+  }
+}
+
+.error_message {
+
+
+  @include media.tablet {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #FF5959;
+  }
+}
+
+.user__input__container {
+
+  &.touched {
+    &.invalid {
+      .label {
+        color: red;
+      }
+    }
+  }
+}

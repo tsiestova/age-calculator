@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Card from "./components/Card";
+import { createContext, useState } from "react";
+export const UserContext = createContext(null);
 
 function App() {
+  const initialState = {
+    year: {
+      value: "",
+    },
+    month: {
+      value: "",
+    },
+    day: {
+      value: "",
+    },
+
+    isSubmitting: "",
+  };
+
+  const [userData, setUserData] = useState(initialState);
+
+  const data = {
+    userData,
+    setUserData,
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UserContext.Provider value={data}>
+        <Card />
+      </UserContext.Provider>
     </div>
   );
 }

@@ -1,0 +1,47 @@
+@use "../styles/abstracts/colors" as colors;
+
+.total__wrap {
+  display: flex;
+}
+
+.total__number {
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  width: 100%;
+  font-style: italic;
+  font-weight: 800;
+  font-size: 56px;
+  color: #151515;
+  border: none;
+  outline: none;
+  max-width: 95px;
+  margin-right: 20px;
+
+  &::-webkit-input-placeholder {
+    color: #854DFF;
+  }
+
+  &::-moz-placeholder {
+    color: #854DFF;
+  }
+
+  &:-ms-input-placeholder {
+    color: #854DFF;
+  }
+
+  &:-moz-placeholder {
+    color: #854DFF;
+  }
+}
+
+.input__wrap {
+
+}
+
+.total__label {
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #151515;
+}

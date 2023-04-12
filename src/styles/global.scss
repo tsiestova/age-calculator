@@ -1,0 +1,10 @@
+@use "./abstracts";
+@use "../styles/abstracts/functions" as media;
+@use "../styles/abstracts/colors" as colors;
+
+
+
+body {
+  font-family: abstracts.$font;
+  background: colors.$color5;
+}

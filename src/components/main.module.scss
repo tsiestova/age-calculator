@@ -1,0 +1,67 @@
+@use "../styles/abstracts/colors" as colors;
+
+.card__wrap {
+  border-radius: 24px 24px 100px 24px;
+  padding-top: 88px;
+}
+
+.layout {
+  padding: 0 16px;
+}
+
+.card__inner {
+  border-radius: 24px 24px 100px 24px;
+  background: colors.$color3;
+  padding: 24px 48px;
+}
+
+.input__list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
+
+  //&:after {
+  //  content: '';
+  //  background: url("../assets/images/icon-arrow.svg");
+  //  display: block;
+  //  width: 64px;
+  //  height: 64px;
+  //  position: absolute;
+  //  top: 0;
+  //  left: 0;
+  //  right: 0;
+  //  margin: auto;
+  //}
+}
+
+.btn {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+
+  svg {
+    background: #854DFF;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+}
+
+.btn__wrap {
+  text-align: right;
+  position: relative;
+
+  &:before {
+    content: '';
+    top: 50%;
+    position: absolute;
+    height: 1px;
+    left: 0;
+    background: #DCDCDC;
+    width: 100%;
+  }
+}
