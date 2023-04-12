@@ -1,4 +1,5 @@
 @use "../styles/abstracts/colors" as colors;
+@use "../styles/abstracts/functions" as media;
 
 .total__wrap {
   display: flex;
@@ -14,8 +15,16 @@
   color: #151515;
   border: none;
   outline: none;
-  max-width: 95px;
+  max-width: 64px;
   margin-right: 20px;
+
+  @include media.tablet {
+    font-weight: 800;
+    font-size: 104px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+    max-width: 130px;
+  }
 
   &::-webkit-input-placeholder {
     color: #854DFF;
@@ -34,14 +43,17 @@
   }
 }
 
-.input__wrap {
-
-}
-
 .total__label {
   font-weight: 800;
   font-size: 56px;
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #151515;
+
+  @include media.tablet {
+    font-weight: 800;
+    font-size: 104px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+  }
 }

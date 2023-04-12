@@ -13,10 +13,10 @@ const calculateUserAge = (year, month, day) => {
   });
 };
 
-const Total = ({ isSubmitting, year, month, day }) => {
+const Total = ({ isSubmitting, year, month, day, isValidValues }) => {
   const userAge = calculateUserAge(year, month, day);
 
-  const condition = isSubmitting === "success";
+  const condition = isSubmitting === "success" && isValidValues;
 
   return (
     <div className={totalStyles.total__list}>

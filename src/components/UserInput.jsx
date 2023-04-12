@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import inputStyles from "./uset-input.module.scss";
 
 const getInputState = ({ isValid, isTouched }) => {
@@ -33,8 +33,6 @@ const UserInput = ({
     isTouched: false,
   });
 
-  // console.log(errorMessage);
-
   return (
     <div
       className={getInputState({
@@ -56,10 +54,9 @@ const UserInput = ({
               value: e.target.value,
               isTouched: true,
               isValid:
-                typeof validate === "function"
-                  ? validate(e.target.value)
-                  : true,
+                typeof validate === "function" && validate(e.target.value),
             });
+
             onChange(e.target.name, e.target.value);
           }}
         />

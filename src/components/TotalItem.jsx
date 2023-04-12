@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import totalStyles from "./total.module.scss";
-import { useContext } from "react";
-import { UserContext } from "../App";
 
 const TotalItem = ({ label, placeholder, value }) => {
   return (

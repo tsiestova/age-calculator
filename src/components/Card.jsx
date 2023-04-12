@@ -1,9 +1,33 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import UserInput from "./UserInput";
 import Total from "./Total";
 import mainStyles from "./main.module.scss";
 import { UserContext } from "../App";
 import inputStyles from "./uset-input.module.scss";
+
+const validate = (name, value) => {
+  if (name === "month") {
+    return value > 0 && value <= 12;
+  }
+
+  if (name === "year") {
+    return value > 0 && value.length === 4;
+  }
+};
+
+const getDays = (year, month) => {
+  return new Date(year, month, 0).getDate();
+};
+
+const validateDays = (year, month, day) => {
+  if (!month && parseInt(day) > 0 && parseInt(day) <= 31) {
+    return true;
+  }
+
+  const daysInMonth = getDays(parseInt(year), parseInt(month));
+
+  return parseInt(day) <= daysInMonth && parseInt(day) > 0;
+};
 
 const Card = () => {
   const { userData, setUserData } = useContext(UserContext);
@@ -14,10 +38,27 @@ const Card = () => {
       [type]: {
         ...userData[type],
         value: value,
+        isValid:
+          type === "day" ? validateDays(type, value) : validate(type, value),
       },
       isSubmitting: "none",
     });
   };
+
+  useEffect(() => {
+    setUserData({
+      ...userData,
+      day: {
+        ...userData.day,
+        isValid: validateDays(
+          userData.year.value,
+          userData.month.value,
+          userData.day.value
+        ),
+      },
+      isSubmitting: "none",
+    });
+  }, [userData.year.value, userData.month.value, userData.day.value]);
 
   const handleSubmit = () => {
     if (!userData.day.value || !userData.month.value || !userData.year.value) {
@@ -32,8 +73,6 @@ const Card = () => {
       });
     }
   };
-
-  console.log(userData);
 
   return (
     <div className={mainStyles.card__wrap}>
@@ -57,7 +96,9 @@ const Card = () => {
                   This field is required
                 </div>
               }
-              validate={(value) => value > 0 && value <= 31}
+              validate={(days) =>
+                validateDays(userData.year.value, userData.month.value, days)
+              }
               isSubmitting={userData.isSubmitting}
             />
             <UserInput
@@ -93,6 +134,7 @@ const Card = () => {
                 </div>
               }
               validate={(value) => value > 0 && value.length === 4}
+              // validate={validate}
               errorMessage={
                 <div className={inputStyles.error_message}>
                   This field is required
@@ -117,6 +159,11 @@ const Card = () => {
           </div>
           <Total
             isSubmitting={userData.isSubmitting}
+            isValidValues={
+              userData.year.isValid &&
+              userData.month.isValid &&
+              userData.day.isValid
+            }
             year={userData.year.value}
             month={userData.month.value}
             day={userData.day.value}
