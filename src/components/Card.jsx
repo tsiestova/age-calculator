@@ -5,28 +5,18 @@ import mainStyles from "./main.module.scss";
 import { UserContext } from "../App";
 import inputStyles from "./uset-input.module.scss";
 
-const validate = (name, value) => {
-  if (name === "month") {
-    return value > 0 && value <= 12;
-  }
-
-  if (name === "year") {
-    return value > 0 && value.length === 4;
-  }
-};
+const today = new Date();
+const currentYear = today.getFullYear();
 
 const getDays = (year, month) => {
   return new Date(year, month, 0).getDate();
 };
 
-const validateDays = (year, month, day) => {
-  if (!month && parseInt(day) > 0 && parseInt(day) <= 31) {
-    return true;
+const getMaxDate = (year, month) => {
+  if (!year && !month) {
+    return 31;
   }
-
-  const daysInMonth = getDays(parseInt(year), parseInt(month));
-
-  return parseInt(day) <= daysInMonth && parseInt(day) > 0;
+  return getDays(parseInt(year), parseInt(month));
 };
 
 const Card = () => {
@@ -38,27 +28,25 @@ const Card = () => {
       [type]: {
         ...userData[type],
         value: value,
-        isValid:
-          type === "day" ? validateDays(type, value) : validate(type, value),
+        isValid: true,
       },
       isSubmitting: "none",
     });
   };
 
+  const maxDate = getMaxDate(userData.year.value, userData.month.value);
+
   useEffect(() => {
-    setUserData({
-      ...userData,
-      day: {
-        ...userData.day,
-        isValid: validateDays(
-          userData.year.value,
-          userData.month.value,
-          userData.day.value
-        ),
-      },
-      isSubmitting: "none",
-    });
-  }, [userData.year.value, userData.month.value, userData.day.value]);
+    if (userData.day.value > maxDate) {
+      setUserData({
+        ...userData,
+        day: {
+          ...userData.day,
+          isValid: false,
+        },
+      });
+    }
+  }, [maxDate]);
 
   const handleSubmit = () => {
     if (!userData.day.value || !userData.month.value || !userData.year.value) {
@@ -83,8 +71,11 @@ const Card = () => {
               label="day"
               type="number"
               name="day"
-              value={userData.day.value}
+              value={userData.day.value === null ? "" : userData.day.value}
+              isValid={userData.day.isValid}
               placeholder="DD"
+              min="1"
+              max={maxDate}
               onChange={handleChange}
               validationMessage={
                 <div className={inputStyles.error_message}>
@@ -96,51 +87,58 @@ const Card = () => {
                   This field is required
                 </div>
               }
-              validate={(days) =>
-                validateDays(userData.year.value, userData.month.value, days)
-              }
               isSubmitting={userData.isSubmitting}
+              invalid={
+                userData.isSubmitting === "submitting" && !userData.day.value
+              }
             />
             <UserInput
               label="month"
               type="number"
               name="month"
-              value={userData.month.value}
+              value={userData.month.value === null ? "" : userData.month.value}
               placeholder="MM"
+              min="1"
+              max="12"
               onChange={handleChange}
               validationMessage={
                 <div className={inputStyles.error_message}>
                   Must be a valid month
                 </div>
               }
-              validate={(value) => value > 0 && value <= 12}
               errorMessage={
                 <div className={inputStyles.error_message}>
                   This field is required
                 </div>
               }
               isSubmitting={userData.isSubmitting}
+              invalid={
+                userData.isSubmitting === "submitting" && !userData.month.value
+              }
             />
             <UserInput
               label="year"
               type="number"
               name="year"
-              value={userData.year.value}
+              value={userData.year.value === null ? "" : userData.year.value}
               placeholder="YYYY"
               onChange={handleChange}
+              min="1"
+              max={currentYear}
               validationMessage={
                 <div className={inputStyles.error_message}>
                   Must be in the past
                 </div>
               }
-              validate={(value) => value > 0 && value.length === 4}
-              // validate={validate}
               errorMessage={
                 <div className={inputStyles.error_message}>
                   This field is required
                 </div>
               }
               isSubmitting={userData.isSubmitting}
+              invalid={
+                userData.isSubmitting === "submitting" && !userData.year.value
+              }
             />
           </div>
           <div className={mainStyles.btn__wrap}>

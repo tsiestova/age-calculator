@@ -1,19 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import inputStyles from "./uset-input.module.scss";
-
-const getInputState = ({ isValid, isTouched }) => {
-  const result = [inputStyles.user__input__container];
-
-  if (!isValid) {
-    result.push(inputStyles.invalid);
-  }
-
-  if (isTouched) {
-    result.push(inputStyles.touched);
-  }
-
-  return result.join(" ");
-};
 
 const UserInput = ({
   label,
@@ -22,50 +8,75 @@ const UserInput = ({
   type,
   value,
   validationMessage,
-  validate,
   placeholder,
   errorMessage,
   isSubmitting,
+  minlength,
+  required,
+  min,
+  max,
 }) => {
   const [inputState, setInputState] = useState({
     value,
-    isValid: false,
     isTouched: false,
+    isValid: true,
   });
 
-  return (
-    <div
-      className={getInputState({
-        isTouched: inputState.isTouched,
-        isValid: inputState.isValid,
-      })}
-    >
-      <label className={inputStyles.label}>{label}</label>
-      <div className={inputStyles.input__wrap}>
-        <input
-          className={inputStyles.user__input}
-          name={name}
-          type={type}
-          value={inputState.value}
-          placeholder={placeholder}
-          onChange={(e) => {
-            setInputState({
-              ...inputState,
-              value: e.target.value,
-              isTouched: true,
-              isValid:
-                typeof validate === "function" && validate(e.target.value),
-            });
+  useEffect(() => {
+    if (isSubmitting === "submitting") {
+      if (!inputState.value) {
+        setInputState({
+          ...inputState,
+          isValid: false,
+        });
+      }
+    }
+  }, [isSubmitting]);
 
-            onChange(e.target.name, e.target.value);
-          }}
-        />
-        {!inputState.isValid && inputState.isTouched
-          ? validationMessage
-          : isSubmitting === "submitting" && !inputState.value
-          ? errorMessage
-          : null}
-      </div>
+  console.log(inputState);
+
+  const handleFocus = () => {
+    setInputState({
+      ...inputState,
+      isTouched: true,
+    });
+  };
+
+  return (
+    <div className={inputStyles.user__input__container}>
+      <label className={inputStyles.label}>{label}</label>
+      <input
+        className={
+          inputState.isTouched
+            ? `${inputStyles.user__input} ${inputStyles.touched}`
+            : !inputState.isValid && isSubmitting === "submitting"
+            ? `${inputStyles.user__input} ${inputStyles.error}`
+            : `${inputStyles.user__input}`
+        }
+        name={name}
+        type={type}
+        value={inputState.value}
+        placeholder={placeholder}
+        min={min}
+        max={max}
+        minLength={minlength}
+        required={required}
+        onChange={(e) => {
+          setInputState({
+            ...inputState,
+            value: e.target.value,
+            isValid: e.target.validity.valid,
+          });
+
+          onChange(e.target.name, e.target.value);
+        }}
+        onFocus={handleFocus}
+      />
+      {inputState.isTouched && !inputState.isValid
+        ? validationMessage
+        : isSubmitting === "submitting" && !inputState.value
+        ? errorMessage
+        : ""}
     </div>
   );
 };

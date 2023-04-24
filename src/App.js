@@ -6,16 +6,16 @@ export const UserContext = createContext(null);
 function App() {
   const initialState = {
     year: {
-      value: "",
+      value: null,
     },
     month: {
-      value: "",
+      value: null,
     },
     day: {
-      value: "",
+      value: null,
     },
 
-    isSubmitting: "",
+    isSubmitting: null,
   };
 
   const [userData, setUserData] = useState(initialState);

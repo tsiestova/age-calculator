@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import totalStyles from "./total.module.scss";
 
 const TotalItem = ({ label, placeholder, value }) => {
